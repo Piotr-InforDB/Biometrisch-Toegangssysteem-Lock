@@ -9,8 +9,10 @@ WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
 //Wifi
-const char* ssid = "Piotr";
-const char* password = "piotr18862";
+// const char* ssid = "Piotr";
+// const char* password = "piotr18862";
+const char* ssid = "13A";
+const char* password = "InforDBWabbes3DPL";
 
 //MQTT
 const char* broker = "accesscontrol.home";
@@ -62,13 +64,19 @@ void onMQTTMessage(int messageSize) {
 
     if (topic == "servo/rotate") {
         int angle = message.toInt();
+
         servo.write(angle);
         Serial.println("Rotating servo");
+
+        delay(3000);
+        Serial.println("Reversing servo");
+        servo.write(0);
+
 
         //TODO Debug
         // delay(250);
         // digitalWrite(12, HIGH);
-        // delay(250);
+        // delay(angle * 10);
         // digitalWrite(12, LOW);
     }
 
@@ -100,7 +108,7 @@ void loopMQTT() {
 }
 
 void initServo() {
-    servo.attach(12);
+    servo.attach(16);
 }
 
 
@@ -111,6 +119,7 @@ void setup() {
     //TODO Debug
     // pinMode(12, OUTPUT);
 
+    initServo();
     initServer();
     initMQTT();
 }
